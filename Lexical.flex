@@ -76,6 +76,9 @@ StringCharacter = [^\r\n\"\\]
 
 %%
 <YYINITIAL> {
+  {Array} {
+    printToken("Array", yytext(), yyline, yycolumn);
+  }
   {Keywords} {
     printToken("Keyword", yytext(), yyline, yycolumn);
   }
