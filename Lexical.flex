@@ -6,6 +6,8 @@
 %line
 %column
 
+Array = int|float|boolean" "[a-z,A-Z]+[0-9,a-z,A-Z]*"["[0-9]?"]"
+
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
 
@@ -48,15 +50,16 @@ StringCharacter = [^\r\n\"\\]
 
   public void printToken(String tokenType, String spelling, int row, int col){
     System.out.println("Type: " + tokenType);
-    System.out.println("Spelling: " + spelling.trim());
-    System.out.println("Row: " + row);
-    System.out.println("Col: " + col);
+    System.out.println("Token: " + spelling.trim());
     System.out.println();
   }
 %}
 
 %%
 <YYINITIAL> {
+  {Array} {
+    printToken("Array", yytext(), yyline, yycolumn);
+  }
   {Keywords} {
     printToken("Keyword", yytext(), yyline, yycolumn);
   }
