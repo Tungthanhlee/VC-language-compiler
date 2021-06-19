@@ -1,3 +1,5 @@
+package scanner
+import java.io.*;
 %%
 
 %class Scanner
@@ -5,6 +7,33 @@
 %unicode
 %line
 %column
+
+
+%{
+  StringBuilder string = new StringBuilder();
+
+  public static File file = new File("output/output.txt");
+
+  public static void WriteToFile(String content) {
+      try {
+          FileWriter fr = new FileWriter(file, true);
+          fr.write(content + "\n");
+          fr.close();
+      } catch (IOException e) {
+          WriteToFile("An error occurred.");
+          e.printStackTrace();
+      }
+  }
+
+  public void printToken(String tokenType, String spelling, int row, int col){
+    System.out.println("Type: " + tokenType);
+    System.out.println("Spelling: " + spelling.trim());
+    System.out.println("Row: " + row);
+    System.out.println("Col: " + col);
+    System.out.println();
+  }
+  
+%}
 
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
@@ -43,17 +72,7 @@ Strings = \"([^\r\n\"\\]*)\"
 StringCharacter = [^\r\n\"\\]
 %state STRING
 
-%{
-  StringBuilder string = new StringBuilder();
 
-  public void printToken(String tokenType, String spelling, int row, int col){
-    System.out.println("Type: " + tokenType);
-    System.out.println("Spelling: " + spelling.trim());
-    System.out.println("Row: " + row);
-    System.out.println("Col: " + col);
-    System.out.println();
-  }
-%}
 
 %%
 <YYINITIAL> {
