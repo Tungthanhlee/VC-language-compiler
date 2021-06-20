@@ -1,5 +1,6 @@
 #!/bin/sh
 
 rm -rf ./output/output.txt
-javac Scanner.javac
-java Scanner ./input/input.vc
+jflex Lexical.flex
+javac Scanner.java
+java Scanner input/input.vc
