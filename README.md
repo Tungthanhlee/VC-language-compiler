@@ -11,7 +11,7 @@
 ### Cách chạy chương trình
 #### Option 1:
 1. Compile file Lexical.flex
-```jflex Lexical.jflex```
+```jflex Lexical.flex```
 
 2. Xóa nội dung cũ trong file output/output.txt
 
