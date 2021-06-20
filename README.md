@@ -1,23 +1,20 @@
 # VC Language Scanner
+
+### Các thành viên trong nhóm:
+- Lê Văn Thịnh 
+- Lê Thanh Tùng
+- Bùi Văn Phúc
+
 ### Prerequisites
 
-- Install JDK8+
-- Install JFlex
+- Java JDK8+
 
-### Generate Scanner
+### Cách chạy chương trình
 
-1. Run JFlex with<br> 
-```jflex Lexical.flex```
-2. Compile the generated .java file<br>
+1. Xóa nội dung cũ trong file output/output.txt
+2. Compile file Scanner.java
 ```javac Scanner.java```
 
-### Run Scanner
-
-1. Scan a single file<br>
+1. Chạy file code vc<br>
 ```java Scanner <test_file_name>``` 
-
-2. Scan multiple files
-  - Copy all files to folder ```input\``` 
-  - Run script ```run_test.ps1``` in powershell<br>
-   ```.\scan-multiple.ps1```
-  - Result of each file will be generated in the ```output\``` folder
+```ex: java Scanner input/input.vc```
