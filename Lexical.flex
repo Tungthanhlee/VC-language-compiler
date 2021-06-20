@@ -1,4 +1,3 @@
-package scanner
 import java.io.*;
 %%
 
@@ -14,23 +13,15 @@ import java.io.*;
 
   public static File file = new File("output/output.txt");
 
-  public static void WriteToFile(String content) {
+  public static void WriteToFile(String tokenType, String token) {
       try {
           FileWriter fr = new FileWriter(file, true);
-          fr.write(content + "\n");
+          fr.write(tokenType + token.trim() + "\n");
           fr.close();
       } catch (IOException e) {
-          WriteToFile("An error occurred.");
+          System.out.println(e);
           e.printStackTrace();
       }
-  }
-
-  public void printToken(String tokenType, String spelling, int row, int col){
-    System.out.println("Type: " + tokenType);
-    System.out.println("Spelling: " + spelling.trim());
-    System.out.println("Row: " + row);
-    System.out.println("Col: " + col);
-    System.out.println();
   }
   
 %}
@@ -72,57 +63,63 @@ Strings = \"([^\r\n\"\\]*)\"
 StringCharacter = [^\r\n\"\\]
 %state STRING
 
-
-
 %%
 <YYINITIAL> {
-  {Array} {
-    printToken("Array", yytext(), yyline, yycolumn);
-  }
   {Keywords} {
-    printToken("Keyword", yytext(), yyline, yycolumn);
+    WriteToFile( "Keyword: " , yytext());
+    // printToken("Keyword", yytext(), yyline, yycolumn);
   }
 
   {Booleans} {
-    printToken("Boolean", yytext(), yyline, yycolumn);
+    WriteToFile( "Booleans: " , yytext());
+    // printToken("Boolean", yytext(), yyline, yycolumn);
   }
 
   {Separators} {
-    printToken("Separator", yytext(), yyline, yycolumn);
+    WriteToFile( "Separators: " , yytext());
+    // printToken("Separator", yytext(), yyline, yycolumn);
   }
 
   {ArithmeticOperators} {
-    printToken("Arithmetic Operator", yytext(), yyline, yycolumn);
+    WriteToFile( "ArithmeticOperators: " , yytext());
+    // printToken("Arithmetic Operator", yytext(), yyline, yycolumn);
   }
 
   {RelationalOperators} {
-    printToken("Relational Operator", yytext(), yyline, yycolumn);
+    WriteToFile( "RelationalOperators: " , yytext());
+    // printToken("Relational Operator", yytext(), yyline, yycolumn);
   }
 
   {EqualityOperators} {
-    printToken("Equality Operator", yytext(), yyline, yycolumn);
+    WriteToFile( "EqualityOperators: " , yytext());
+    // printToken("Equality Operator", yytext(), yyline, yycolumn);
   }
 
   {LogicalOperators} {
-    printToken("Logical Operator", yytext(), yyline, yycolumn);
+    WriteToFile( "LogicalOperators: " , yytext());
+    // printToken("Logical Operator", yytext(), yyline, yycolumn);
   }
 
   {AssignmentOperator} {
-    printToken("Assignment Operator", yytext(), yyline, yycolumn);
+    WriteToFile( "AssignmentOperator: " , yytext());
+    // printToken("Assignment Operator", yytext(), yyline, yycolumn);
   }
 
   \" { yybegin(STRING); string.setLength(0); }
 
   {Integers} {
-    printToken("Integer", yytext(), yyline, yycolumn);
+    WriteToFile( "Integers: " , yytext());
+    // printToken("Integer", yytext(), yyline, yycolumn);
   }
 
   {Floats} {
-    printToken("Float", yytext(), yyline, yycolumn);
+    WriteToFile( "Floats: " , yytext());
+    // printToken("Float", yytext(), yyline, yycolumn);
   }
 
   {Comments} {
-    printToken("Comment", yytext(), yyline, yycolumn);
+    WriteToFile( "Comments: " , yytext());
+    // printToken("Comment", yytext(), yyline, yycolumn);
   }
  
   {WhiteSpace} {
@@ -130,13 +127,16 @@ StringCharacter = [^\r\n\"\\]
   }
 
   {Identifiers} {
-    printToken("Identifier", yytext(), yyline, yycolumn);
+    WriteToFile( "Identifiers: " , yytext());
+    // printToken("Identifier", yytext(), yyline, yycolumn);
   }
 }
 
 <STRING> {
   \" { 
-   yybegin(YYINITIAL); printToken("String", string.toString(), yyline, yycolumn); 
+   yybegin(YYINITIAL); 
+   WriteToFile( "String:" , yytext());
+  //  printToken("String", string.toString(), yyline, yycolumn); 
   }
 
   {StringCharacter}+ {
@@ -152,7 +152,13 @@ StringCharacter = [^\r\n\"\\]
   "\\'" { string.append( '\'' ); }
   "\\\\" { string.append( '\\' ); }
 
-  {LineTerminator} {printToken("Unterminated String", yytext(), yyline, yycolumn);}
+  {LineTerminator} {
+    WriteToFile( "Unterminated String" , yytext());
+    // printToken("Unterminated String", yytext(), yyline, yycolumn);
+  }
 }
 
-[^] {printToken("Error: Unknow token", yytext(), yyline, yycolumn);}
+[^] {
+  WriteToFile( "Error: Unknow token" , yytext());
+  // printToken("Error: Unknow token", yytext(), yyline, yycolumn);
+}
